@@ -1,0 +1,12 @@
+{
+  "name": "socket-pusher",
+  "version": "0.1.0",
+  "description": "experimenting with socket.io",
+  "author": "Amer Alimanovic <network@amer8.de>",
+  "author": "Boris Searles <boris@lucidgardens.com>",
+  "dependencies": {
+    "socket.io": ">= 0.9.x",
+    "mime": ">= 1.2.x"
+  },
+  "engine": "node 0.8.x"
+}

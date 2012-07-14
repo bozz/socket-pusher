@@ -1,70 +1,71 @@
 var socket = io.connect('http://localhost:8080');
-socket.on('time', function (data) {
-  $('#berlin-time').html(data.berlin);
-  // console.log(data.berlin);
-  // socket.emit('my other event', { my: 'data' });
+socket.on('newQuote', function (data) {
+  if(data.date) {
+    var time = (new Date(data.date)).getTime();
+    var quote = [time, parseFloat(data.open), parseFloat(data.high), parseFloat(data.open), parseFloat(data.close)];
+    // console.log("quote:", time, quote);
+    window.chart.series[0].addPoint(quote, true, false);
+  }
 });
 
 
-
 $(function() {
-    
-    Highcharts.setOptions({
+
+  Highcharts.setOptions({
 		global : {
 			useUTC : false
 		}
 	});
 
 		// create the chart
-		var chart = new Highcharts.StockChart({
+		window.chart = new Highcharts.StockChart({
 			chart : {
 				renderTo : 'chart'
 			},
-
 			title: {
-				text: 'AAPL stock price by minute'
+				text: 'Google stocks'
 			},
-			
 			rangeSelector : {
 				buttons : [{
-					type : 'hour',
+					type : 'minute',
 					count : 1,
-					text : '1h'
+					text : '1m'
 				}, {
-					type : 'day',
-					count : 1,
-					text : '1D'
+					type : 'minute',
+					count : 5,
+					text : '5m'
 				}, {
 					type : 'all',
-					count : 1,
 					text : 'All'
 				}],
 				selected : 1,
 				inputEnabled : false
 			},
-            
-            exporting: {
-                enabled: false
-            },
-			
+      rangeSelector: {
+        enabled: false
+      },
+      exporting: {
+        enabled: false
+      },
 			series : [{
-				name : 'AAPL',
+				name : 'quotes',
 				type: 'candlestick',
-				data : (function() {
-                    // generate an array of random data
-                    var data = [], time = (new Date()).getTime(), i;
+        data: [],
+				// data : (function() {
+          // generate an array of random data
+        //   var data = [], time = (new Date()).getTime(), i;
 
-                    for( i = -999; i <= 0; i++) {
-                        data.push([
-                            time + i * 1000,
-                            Math.round(Math.random() * 100),
-                            Math.round(Math.random() * 100),
-                            Math.round(Math.random() * 100),
-                            Math.round(Math.random() * 100)
-                        ]);
-                    }
-                    return data;
-                })(),
+        //   for( i = -999; i <= 0; i++) {
+        //     data.push([
+        //               time + i * 1000,
+        //               Math.round(Math.random() * 100),
+        //               Math.round(Math.random() * 100),
+        //               Math.round(Math.random() * 100),
+        //               Math.round(Math.random() * 100)
+        //     ]);
+        //   }
+        //   return data;
+        // })(),
 				tooltip: {
 					valueDecimals: 2
 				}

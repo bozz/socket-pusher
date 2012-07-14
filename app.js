@@ -20,8 +20,6 @@ db.open(function(err, db) {
 
 var path = ".";
 var port = 8080;
-
-
 http.listen(port);
 
 function handler(request, response) {
@@ -66,13 +64,31 @@ function handler(request, response) {
 
 io.sockets.on('connection', function (socket) {
 
-  setInterval(function(){
-    var now = new Date();
-    var berlinTime = now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds();
-    socket.emit('time', { berlin: berlinTime });
-  }, 1000);
-
-  socket.on('my other event', function (data) {
-    console.log(data);
+  db.collection('quotes', function(err, collection) {
+    if(err){
+      console.log("error reading from collection 'quotes'", err);
+    } else {
+      var data = [];
+      collection.find().toArray(function(err, items) {
+        console.log("fetched items: ", items.length);
+        data = items;
+      });
+      var index = 0;
+      setInterval(function(){
+        if(index < data.length) {
+          socket.emit('newQuote', data[index]);
+          index++;
+        }
+      }, 1000);
+    }
   });
+
+  // setInterval(function(){
+  //   var now = new Date();
+  //   var berlinTime = now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds();
+  //   socket.emit('time', { berlin: berlinTime });
+  // }, 1000);
+  // socket.on('my other event', function (data) {
+  //   console.log(data);
+  // });
 });

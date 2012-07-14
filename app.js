@@ -52,7 +52,13 @@ function handler(request, response) {
 
 
 io.sockets.on('connection', function (socket) {
-  socket.emit('news', { hello: 'world' });
+
+  setInterval(function(){
+    var now = new Date();
+    var berlinTime = now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds();
+    socket.emit('time', { berlin: berlinTime });
+  }, 1000);
+
   socket.on('my other event', function (data) {
     console.log(data);
   });

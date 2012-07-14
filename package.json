@@ -6,7 +6,8 @@
   "author": "Boris Searles <boris@lucidgardens.com>",
   "dependencies": {
     "socket.io": ">= 0.9.x",
-    "mime": ">= 1.2.x"
+    "mime": ">= 1.2.x",
+    "mongodb": ">= 1.0.x"
   },
   "engine": "node 0.8.x"
 }

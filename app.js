@@ -5,6 +5,19 @@ var libpath = require('path'),
     url = require("url"),
     mime = require('mime');
 
+var mongo = require('mongodb'),
+    Server = mongo.Server,
+    Db = mongo.Db;
+
+var server = new Server('localhost', 27017, {auto_reconnect: true});
+var db = new Db('stocks', server);
+
+db.open(function(err, db) {
+  if(!err) {
+    console.log("We are connected");
+  }
+});
+
 var path = ".";
 var port = 8080;
 
